@@ -1,0 +1,28 @@
+body {
+  background: #24353f;
+}
+
+a{
+  cursor: pointer;
+}
+
+.color {
+  color: #17a2b8;
+}
+
+#card ::placeholder {
+  color: #fff;
+}
+
+#card button:hover {
+  color: #fff;
+}
+
+#card a {
+  text-decoration: none;
+  color: #fff;
+}
+
+#card a:hover {
+  text-decoration: underline;
+}

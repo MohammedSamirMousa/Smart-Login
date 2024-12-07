@@ -46,13 +46,14 @@ formSignup.addEventListener("submit", function (e) {
     signUp();
     errorMassege.classList.replace("d-block", "d-none");
   } else {
-    successMassege.classList.replace("d-block", "d-none");
     errorMassege.classList.replace("d-none", "d-block");
+    successMassege.classList.replace("d-block", "d-none");
   }
 });
 
 function signUp() {
   if (isExists()) {
+    successMassege.classList.replace("d-block", "d-none");
     exists.classList.replace("d-none", "d-block");
   } else {
     var userData = {
@@ -60,17 +61,17 @@ function signUp() {
       email: emailInput.value,
       password: passwordInput.value,
     };
-    exists.classList.replace("d-block", "d-none");
-    successMassege.classList.replace("d-none", "d-block");
     dataSignup.push(userData);
     localStorage.setItem("user", JSON.stringify(dataSignup));
     console.log(dataSignup);
+    exists.classList.replace("d-block", "d-none");
+    successMassege.classList.replace("d-none", "d-block");
     clear();
   }
 }
 
-function validate(condition) {
-  if (condition) {
+function validate(input, condition) {
+  if ((input, condition)) {
     return true;
   } else {
     return false;
@@ -86,8 +87,8 @@ function clear() {
 function isExists() {
   for (i = 0; i < dataSignup.length; ++i) {
     if (
-      dataSignup[i].email.toLowerCase() === emailInput.value.toLowerCase() &&
-      dataSignup[i].password === passwordInput.value
+      dataSignup[i].email.toLowerCase() === emailInput.value.toLowerCase() ||
+      dataSignup[i].password.toLowerCase() === passwordInput.value.toLowerCase()
     ) {
       return true;
     } else {

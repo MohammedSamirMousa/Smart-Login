@@ -49,8 +49,8 @@ function logIn() {
   }
 }
 
-function validate(condition) {
-  if ((condition)) {
+function validate(input, condition) {
+  if ((input, condition)) {
     return true;
   } else {
     return false;
@@ -61,7 +61,7 @@ function isExists() {
   for (i = 0; i < dataLogin.length; ++i) {
     if (
       dataLogin[i].email.toLowerCase() === emailLogin.value.toLowerCase() &&
-      dataLogin[i].password === passwordLogin.value
+      dataLogin[i].password.toLowerCase() === passwordLogin.value.toLowerCase()
     ) {
       return true;
     } else {

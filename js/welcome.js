@@ -1,11 +1,12 @@
-var nameContainer = document.querySelector("h1")
-var logoutBtn = document.getElementById("logoutBtn")
+var nameContainer = document.querySelector("h1");
+var logoutBtn = document.getElementById("logoutBtn");
 
-nameContainer.innerHTML = "Welcome " + JSON.parse(localStorage.getItem("user"))[0].name
+nameContainer.innerHTML =
+  "Welcome " + JSON.parse(localStorage.getItem("user"))[0].name;
 
-logoutBtn.addEventListener("click", logout)
+logoutBtn.addEventListener("click", logout);
 
 function logout() {
-   localStorage.removeItem("user")
-   window.location.href = "index.html"
+  localStorage.removeItem("user");
+  window.location.href = "index.html";
 }

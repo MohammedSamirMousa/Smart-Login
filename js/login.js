@@ -1,59 +1,68 @@
 var emailLogin = document.getElementById("emailLogin");
 var passwordLogin = document.getElementById("passwordLogin");
+// To get Inputs
 var successMassege = document.getElementById("successMassege");
 var errorMassege = document.getElementById("errorMassege");
-var formLogin = document.getElementById("formLogin");
 var exists = document.getElementById("exists");
+// To get paragraphs
+var emailRegex = /^[a-zA0-Z9]{3,}@[a-zA0-Z9]{3,}\.[a-zA0-Z9]{3,}$/;
+var passwordRegex = /^[a-zA0-Z9]{3,}$/;
+// Regex
 var btnLogin = document.getElementById("btnLogin");
-var baseURL = ""; // Use this for dynamic redirection if needed
+// To get button
+var formLogin = document.getElementById("formLogin");
+// To get form
+var dataLogin = JSON.parse(localStorage.getItem("user")) || [];
 
-// Regular expressions for validation
-var nameRegex = /^[a-zA-Z0-9]{3,50}$/;
-var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-var passwordRegex = /^[a-zA-Z0-9]{3,50}$/;
+emailLogin.addEventListener("input", function () {
+  validate(emailLogin, emailRegex.test(emailLogin));
+  console.log("hi");
+});
 
-// Load user data from localStorage
-var dataSignup = JSON.parse(localStorage.getItem("user")) || [];
-
+passwordLogin.addEventListener("input", function () {
+  validate(passwordLogin, passwordRegex.test(passwordLogin));
+  console.log("yes");
+});
 formLogin.addEventListener("submit", function (e) {
-  e.preventDefault(); // Prevent the form from submitting normally
+  e.preventDefault();
 
-  var isValidEmail = checkInput(emailLogin, emailRegex.test(emailLogin.value));
-  var isValidPass = checkInput(passwordLogin, passwordRegex.test(passwordLogin.value));
-
+  var isValidEmail = validate(emailLogin, emailRegex.test(emailLogin.value));
+  var isValidPass = validate(
+    passwordLogin,
+    passwordRegex.test(passwordLogin.value)
+  );
   if (isValidEmail && isValidPass) {
-    login();
+    logIn();
+    console.log("yes");
   } else {
-    // Show the error message if validation fails
+    exists.classList.replace("d-block", "d-none");
     errorMassege.classList.replace("d-none", "d-block");
-    successMassege.classList.replace("d-block", "d-none");
   }
 });
 
-function login() {
-  // Find the user in the dataSignup array
-  var user = dataSignup.find(
-    (user) => user.emailInput.toLowerCase() === emailLogin.value.toLowerCase()
-  );
-
-  if (user) {
-    // Check if the password matches
-    if (user.passwordInput === passwordLogin.value) {
-      // Set user name in localStorage
-      localStorage.setItem("user", JSON.stringify(user));
-      // Redirect to welcome page
-      location.replace(baseURL + '/welcome.html');
-    } else {
-      // Incorrect password
-      errorMassege.textContent = "Incorrect password.";
-      errorMassege.classList.replace("d-none", "d-block");
-    }
+function logIn() {
+  if (isExists()) {
+    location.href = "welcome.html";
   } else {
-    // Email not found
-    location.href = "welcome.html"
+    exists.classList.replace("d-none", "d-block");
+    errorMassege.classList.replace("d-block", "d-none");
   }
 }
 
-function checkInput(input, condition) {
-  return condition;
+function validate(input, condition) {
+  if ((input, condition)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function isExists() {
+  for (i = 0; i < dataLogin.length; ++i) {
+    if (dataLogin[i].email.toLowerCase() === emailLogin.value.toLowerCase()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

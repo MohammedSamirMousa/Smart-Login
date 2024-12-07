@@ -1,109 +1,94 @@
 var nameInput = document.getElementById("name");
-var email = document.getElementById("email");
-var password = document.getElementById("password");
-// To get inputs
-var successMassege = document.getElementById("successMassege");
-var errorMassege = document.getElementById("errorMassege");
-var exists = document.getElementById("exists");
-// To get paragraph
+var emailInput = document.getElementById("email");
+var passwordInput = document.getElementById("password");
+// To get Inputs
 var btnSignup = document.getElementById("btnSignup");
 // To get button
 var formSignup = document.getElementById("formSignup");
-// To get Form
-var allInput = document.querySelectorAll("input");
-// To get all inputs
-var nameRegex = /^[a-zA0-Z9]{3,50}$/;
-var emailRegex = /^[a-zA0-Z9]{3,50}@[a-zA0-Z9]{3,50}\.[a-zA0-Z9]{3,50}$/;
-var passwordRegex = /^[a-zA-Z0-9]{3,50}$/;
+// To get form
+var successMassege = document.getElementById("successMassege");
+var errorMassege = document.getElementById("errorMassege");
+var exists = document.getElementById("exists");
+// To get paragraphs
+var nameRegex = /^[a-zA0-Z9]{3,}$/;
+var emailRegex = /^[a-zA0-Z9]{3,}@[a-zA0-Z9]{3,}\.[a-zA0-Z9]{3,}$/;
+var passwordRegex = /^[a-zA0-Z9]{3,}$/;
 // Regex
 
-var arrSignup = []
-
-if(localStorage.getItem("user")){
-  arrSignup = JSON.parse(localStorage.getItem("user"))
-  console.log(arrSignup);
-  
+var dataSignup = [];
+if (localStorage.getItem("user")) {
+  dataSignup = JSON.parse(localStorage.getItem("user"));
+  console.log(dataSignup);
 }
+// store data
 
 nameInput.addEventListener("input", function () {
-  checkInput(nameInput, nameRegex.test(nameInput.value));
+  validate(nameInput, nameRegex.test(nameInput.value));
 });
-// To validate (nameInput)
 
-email.addEventListener("input", function () {
-  checkInput(email, emailRegex.test(email.value));
+emailInput.addEventListener("input", function () {
+  validate(emailInput, emailRegex.test(emailInput.value));
 });
-// To validate (emailInput)
 
-password.addEventListener("input", function () {
-  checkInput(password, passwordRegex.test(password.value));
+passwordInput.addEventListener("input", function () {
+  validate(passwordInput, passwordRegex.test(passwordInput.value));
 });
-// To validate (passwordInput)
-
 formSignup.addEventListener("submit", function (e) {
-  e.preventDefault(); // Return <form> to defult value (Stop problems)
+  e.preventDefault();
 
-  //   Confirm validatiom
-  var isValidName = checkInput(nameInput, nameRegex.test(nameInput.value));
-  var isValidEmail = checkInput(email, emailRegex.test(email.value));
-  var isValidPass = checkInput(password, passwordRegex.test(password.value));
+  var isValidName = validate(nameInput, nameRegex.test(nameInput.value));
+  var isValidEmail = validate(emailInput, emailRegex.test(emailInput.value));
+  var isValidPass = validate(
+    passwordInput,
+    passwordRegex.test(passwordInput.value)
+  );
   if (isValidName && isValidEmail && isValidPass) {
-    // If the name , email and pass are valid the data will be submited
-    signup();
+    signUp();
+    errorMassege.classList.replace("d-block", "d-none");
   } else {
-    // else shows errorMassage
-    errorMassege.classList.replace("d-none", "d-block");
     successMassege.classList.replace("d-block", "d-none");
+    errorMassege.classList.replace("d-none", "d-block");
   }
 });
 
-function signup() {
-  if (isEmailExist()) {
-    // If the email was exist in localStorage that will be shown "Email is already exist"
+function signUp() {
+  if (isExists()) {
     exists.classList.replace("d-none", "d-block");
-    errorMassege.classList.replace("d-block", "d-none");
-    successMassege.classList.replace("d-block", "d-none");
   } else {
-    // Else the data will be pushed in the arr array
-    var userDataSignup = {
+    var userData = {
       name: nameInput.value,
-      emailInput: email.value,
-      passwordInput: password.value,
+      email: emailInput.value,
+      password: passwordInput.value,
     };
-    arrSignup.push(userDataSignup)
-    localStorage.setItem("user" , JSON.stringify(arrSignup))
-    successMassege.classList.replace("d-none", "d-block");
-    errorMassege.classList.replace("d-block", "d-none");
     exists.classList.replace("d-block", "d-none");
+    successMassege.classList.replace("d-none", "d-block");
+    dataSignup.push(userData);
+    localStorage.setItem("user", JSON.stringify(dataSignup));
+    console.log(dataSignup);
     clear();
-    
   }
 }
 
-function checkInput(input, condition) {
-  if (condition) {
+function validate(input, condition) {
+  if ((input, condition)) {
     return true;
   } else {
     return false;
   }
 }
-// To check inputs if the users input's is valid in real time
 
-// This func for clear inputs after submittion operation
 function clear() {
   nameInput.value = "";
-  email.value = "";
-  password.value = "";
+  emailInput.value = "";
+  passwordInput.value = "";
 }
-// To check if the email is exist or not by using for
-function isEmailExist() {
-  for (let i = 0; i < arrSignup.length; i++) {
-    if (arrSignup[i].emailInput.toLowerCase() === email.value.toLowerCase()) {
+
+function isExists() {
+  for (i = 0; i < dataSignup.length; ++i) {
+    if (dataSignup[i].email.toLowerCase() === emailInput.value.toLowerCase()) {
       return true;
+    } else {
+      return false;
     }
   }
-  return false;
 }
-
-
-
